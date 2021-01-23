@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Awesome-pyecharts</title>
+            <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
+
+</head>
+<body>
+    <div id="1" class="chart-container" style="width:1350px; height:750px;"></div>
+    <script>
+        var chart_1 = echarts.init(
+            document.getElementById('1'), 'white', {renderer: 'canvas'});
+        var option_1 = {
+    "animation": true,
+    "animationThreshold": 2000,
+    "animationDuration": 1000,
+    "animationEasing": "cubicOut",
+    "animationDelay": 0,
+    "animationDurationUpdate": 300,
+    "animationEasingUpdate": "cubicOut",
+    "animationDelayUpdate": 0,
+    "color": [
+        "#c23531",
+        "#2f4554",
+        "#61a0a8",
+        "#d48265",
+        "#749f83",
+        "#ca8622",
+        "#bda29a",
+        "#6e7074",
+        "#546570",
+        "#c4ccd3",
+        "#f05b72",
+        "#ef5b9c",
+        "#f47920",
+        "#905a3d",
+        "#fab27b",
+        "#2a5caa",
+        "#444693",
+        "#726930",
+        "#b2d235",
+        "#6d8346",
+        "#ac6767",
+        "#1d953f",
+        "#6950a1",
+        "#918597"
+    ],
+    "series": [
+        {
+            "type": "graph",
+            "layout": "force",
+            "symbol": "circle",
+            "symbolSize": 10,
+            "circular": {
+                "rotateLabel": false
+            },
+            "force": {
+                "repulsion": 4000,
+                "edgeLength": 50,
+                "gravity": 0.2
+            },
+            "label": {
+                "show": true,
+                "position": "top",
+                "margin": 8
+            },
+            "lineStyle": {
+                "show": true,
+                "width": 1,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "roam": true,
+            "draggable": false,
+            "focusNodeAdjacency": true,
+            "data": [
+                {
+                    "name": "Christopher D Manning",
+                    "fixed": false,
+                    "symbolSize": 50
+                },
+                {
+                    "name": "Mihai Surdeanu",
+                    "fixed": false,
+                    "symbolSize": 30
+                },
+                {
+                    "name": "Andrew Ng",
+                    "fixed": false,
+                    "symbolSize": 30
+                },
+                {
+                    "name": "Daniel Cer",
+                    "fixed": false,
+                    "symbolSize": 30
+                },
+                {
+                    "name": "Jenny Rose Finkel",
+                    "fixed": false,
+                    "symbolSize": 30
+                },
+                {
+                    "name": "Hinrich Sch\u00fctze",
+                    "fixed": false,
+                    "symbolSize": 30
+                },
+                {
+                    "name": "Angel Chang",
+                    "fixed": false,
+                    "symbolSize": 30
+                },
+                {
+                    "name": "Prabhakar Raghavan",
+                    "fixed": false,
+                    "symbolSize": 30
+                },
+                {
+                    "name": "Daniel Ramage",
+                    "fixed": false,
+                    "symbolSize": 30
+                },
+                {
+                    "name": "Christopher Potts",
+                    "fixed": false,
+                    "symbolSize": 30
+                },
+                {
+                    "name": "Minh-Thang Luong",
+                    "fixed": false,
+                    "symbolSize": 30
+                },
+                {
+                    "name": "Gabor Angeli",
+                    "fixed": false,
+                    "symbolSize": 30
+                },
+                {
+                    "name": "Kristina Toutanova",
+                    "fixed": false,
+                    "symbolSize": 30
+                },
+                {
+                    "name": "Jeffrey Pennington",
+                    "fixed": false,
+                    "symbolSize": 30
+                },
+                {
+                    "name": "Dan Jurafsky",
+                    "fixed": false,
+                    "symbolSize": 30
+                },
+                {
+                    "name": "Danqi Chen",
+                    "fixed": false,
+                    "symbolSize": 30
+                },
+                {
+                    "name": "Bill MacCartney",
+                    "fixed": false,
+                    "symbolSize": 30
+                },
+                {
+                    "name": "Jason Chuang",
+                    "fixed": false,
+                    "symbolSize": 30
+                },
+                {
+                    "name": "Richard Socher",
+                    "fixed": false,
+                    "symbolSize": 30
+                },
+                {
+                    "name": "Marie-Catherine de Marneffe",
+                    "fixed": false,
+                    "symbolSize": 30
+                }
+            ],
+            "edgeLabel": {
+                "show": false,
+                "position": "top",
+                "margin": 8
+            },
+            "edgeSymbol": [
+                null,
+                null
+            ],
+            "edgeSymbolSize": 10,
+            "links": [
+                {
+                    "source": "Christopher D Manning",
+                    "target": "Mihai Surdeanu"
+                },
+                {
+                    "source": "Christopher D Manning",
+                    "target": "Andrew Ng"
+                },
+                {
+                    "source": "Christopher D Manning",
+                    "target": "Daniel Cer"
+                },
+                {
+                    "source": "Christopher D Manning",
+                    "target": "Jenny Rose Finkel"
+                },
+                {
+                    "source": "Christopher D Manning",
+                    "target": "Hinrich Sch\u00fctze"
+                },
+                {
+                    "source": "Christopher D Manning",
+                    "target": "Angel Chang"
+                },
+                {
+                    "source": "Christopher D Manning",
+                    "target": "Prabhakar Raghavan"
+                },
+                {
+                    "source": "Christopher D Manning",
+                    "target": "Daniel Ramage"
+                },
+                {
+                    "source": "Christopher D Manning",
+                    "target": "Christopher Potts"
+                },
+                {
+                    "source": "Christopher D Manning",
+                    "target": "Minh-Thang Luong"
+                },
+                {
+                    "source": "Christopher D Manning",
+                    "target": "Gabor Angeli"
+                },
+                {
+                    "source": "Christopher D Manning",
+                    "target": "Kristina Toutanova"
+                },
+                {
+                    "source": "Christopher D Manning",
+                    "target": "Jeffrey Pennington"
+                },
+                {
+                    "source": "Christopher D Manning",
+                    "target": "Dan Jurafsky"
+                },
+                {
+                    "source": "Christopher D Manning",
+                    "target": "Danqi Chen"
+                },
+                {
+                    "source": "Christopher D Manning",
+                    "target": "Bill MacCartney"
+                },
+                {
+                    "source": "Christopher D Manning",
+                    "target": "Jason Chuang"
+                },
+                {
+                    "source": "Christopher D Manning",
+                    "target": "Richard Socher"
+                },
+                {
+                    "source": "Christopher D Manning",
+                    "target": "Marie-Catherine de Marneffe"
+                }
+            ]
+        }
+    ],
+    "legend": [
+        {
+            "data": [],
+            "selected": {},
+            "show": true,
+            "padding": 5,
+            "itemGap": 10,
+            "itemWidth": 25,
+            "itemHeight": 14
+        }
+    ],
+    "tooltip": {
+        "show": true,
+        "trigger": "item",
+        "triggerOn": "mousemove|click",
+        "axisPointer": {
+            "type": "line"
+        },
+        "showContent": true,
+        "alwaysShowContent": false,
+        "showDelay": 0,
+        "hideDelay": 100,
+        "textStyle": {
+            "fontSize": 14
+        },
+        "borderWidth": 0,
+        "padding": 5
+    },
+    "title": [
+        {
+            "text": "SocialNet",
+            "padding": 5,
+            "itemGap": 10
+        }
+    ]
+};
+        chart_1.setOption(option_1);
+    </script>
+</body>
+</html>
