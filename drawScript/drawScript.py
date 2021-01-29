@@ -9,9 +9,11 @@ from pyecharts.charts import Graph,Grid,Page,Line
 from pyecharts.commons.utils import JsCode
 from pyecharts.components import Table
 from pyecharts.options import ComponentTitleOpts
+import argparse
 import json
 import sys
 import time
+
 
 numTOP=20
 tmpPath="/Users/zhangjian/IdeaProjects/ScholarProject/tmp/"
@@ -100,48 +102,50 @@ def citedLine(x_data,y_data):
     return cl
 
 if __name__ == "__main__":
-    msgList = sys.argv[2:]
-    TYPE = sys.argv[1]
-    if TYPE == "socialNet":
-        scholarsList=' '.join(msgList)
-        scholarsList=scholarsList.split('&$&')
-        root=scholarsList[-1]
-        del scholarsList[-1]
-        scholarsList=list(set(scholarsList))
-        nodes_social=[]
-        links_social=[]
-        nodes_social.append(opts.GraphNode(name=root, symbol_size=50))
-        for index in range(len(scholarsList)-1):
-            nodes_social.append(opts.GraphNode(name=scholarsList[index], symbol_size=30))
-            links_social.append(opts.GraphLink(source=root, target=scholarsList[index]))
-        tempFile=tmpPath + '{}_sc.html'.format(root.replace(" ","_"))
-        NetGraph(nodes_social,links_social,TYPE).render(tempFile)
-        print(tempFile)
-    elif TYPE == "publicationsNet":
-        publicationsList = ' '.join(msgList)
-        publicationsList = publicationsList.split('&$&')
-        publicationsList = list(set(publicationsList))
-        root = "PUBLICATIONS"
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--type", type=str)
+    parser.add_argument("--message", type=str)
+    parser.add_argument("--scholar", type=str)
+    args = parser.parse_args()
+
+    if args.type == "socialNet":
+        print(args.message.replace(" - ",",").replace("，",","))
+        coauthorsInfo = json.loads(args.message.replace(" - ",",").replace("，",","))
         nodes_social = []
         links_social = []
-        nodes_social.append(opts.GraphNode(name=root, symbol_size=30))
-        for item in publicationsList:
-            nodes_social.append(opts.GraphNode(name=item, symbol_size=10))
-            links_social.append(opts.GraphLink(source=root, target=item))
-        tempFile = tmpPath + '{}_pb.html'.format(''.join(list(str(int(time.time()))))[-6:])
-        NetGraph(nodes_social, links_social, TYPE).render(tempFile)
+        nodes_social.append(opts.GraphNode(name=args.scholar, symbol_size=50))
+        for scho in coauthorsInfo:
+            print(scho)
+            nodes_social.append(opts.GraphNode(name=scho["name"], symbol_size=30))
+            links_social.append(opts.GraphLink(source=args.scholar, target=scho["name"]))
+        tempFile=tmpPath + '{}_sc.html'.format(args.scholar.replace(" ","_"))
+        NetGraph(nodes_social,links_social,args.type).render(tempFile)
         print(tempFile)
-    elif TYPE == "citedLine":
-        x_data=[]
-        y_data=[]
-        citeData = ''.join(msgList).replace("-",',').replace("\'","\"")
-        citeData = json.loads(citeData)
-        for item in citeData:
-            x_data.append(item)
-            y_data.append(citeData[item])
-        tempFile = tmpPath + '{}_line.html'.\
-            format(''.join(list(str(int(time.time()))))[-6:])
-        citedLine(x_data,y_data).render(tempFile)
-        print(tempFile)
-    else:
-        print("ERROR".fomat(TYPE))
+    # elif TYPE == "publicationsNet":
+    #     publicationsList = ' '.join(msgList)
+    #     publicationsList = publicationsList.split('&$&')
+    #     publicationsList = list(set(publicationsList))
+    #     root = "PUBLICATIONS"
+    #     nodes_social = []
+    #     links_social = []
+    #     nodes_social.append(opts.GraphNode(name=root, symbol_size=30))
+    #     for item in publicationsList:
+    #         nodes_social.append(opts.GraphNode(name=item, symbol_size=10))
+    #         links_social.append(opts.GraphLink(source=root, target=item))
+    #     tempFile = tmpPath + '{}_pb.html'.format(''.join(list(str(int(time.time()))))[-6:])
+    #     NetGraph(nodes_social, links_social, TYPE).render(tempFile)
+    #     print(tempFile)
+    # elif TYPE == "citedLine":
+    #     x_data=[]
+    #     y_data=[]
+    #     citeData = ''.join(msgList).replace("-",',').replace("\'","\"")
+    #     citeData = json.loads(citeData)
+    #     for item in citeData:
+    #         x_data.append(item)
+    #         y_data.append(citeData[item])
+    #     tempFile = tmpPath + '{}_line.html'.\
+    #         format(''.join(list(str(int(time.time()))))[-6:])
+    #     citedLine(x_data,y_data).render(tempFile)
+    #     print(tempFile)
+    # else:
+    #     print("ERROR".fomat(TYPE))

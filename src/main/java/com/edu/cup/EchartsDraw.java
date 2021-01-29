@@ -9,6 +9,7 @@ package com.edu.cup;
  */
 
 
+import javax.tools.Tool;
 import javax.xml.crypto.dsig.spec.HMACParameterSpec;
 import java.util.*;
 import java.io.BufferedReader;
@@ -24,7 +25,7 @@ public class EchartsDraw {
         this.type=type;
     }
 
-    private String executeScript(String command){
+    private String ExecuteScript(String command){
         Process proc;
         try {
             proc = Runtime.getRuntime().exec(command);
@@ -41,18 +42,18 @@ public class EchartsDraw {
         return null;
     }
 
-    public String saveHTML(List<String> resultList){
+    public String SaveHTML(List<Map> resultList,String scholar){
         if (this.type == "socialNet" ){
-            String msg4Python = String.join("&$&",resultList);
-            String inputParameter = String.format("%s %s",this.type,msg4Python);
+            String msg4Python = ToolBag.MaptoString(resultList);
+            String inputParameter = String.format("--type \"%s\" --message \"%s\" --scholar \"%s\"",this.type,msg4Python,scholar);
             String command4Python = String.format("python %s %s",drawscriptPath,inputParameter);
-            return executeScript(command4Python);
+            return ExecuteScript(command4Python);
         }
         else if(this.type == "publicationsNet"){
-            String msg4Python = String.join("&$&",resultList);
+            String msg4Python = ToolBag.MaptoString(resultList);
             String inputParameter = String.format("%s %s",this.type,msg4Python);
             String command4Python = String.format("python %s %s",drawscriptPath,inputParameter);
-            return executeScript(command4Python);
+            return ExecuteScript(command4Python);
         }
         return null;
     }
@@ -62,7 +63,7 @@ public class EchartsDraw {
             String msg4Python = citeData;
             String inputParameter = String.format("%s %s",this.type,msg4Python);
             String command4Python = String.format("python %s %s",drawscriptPath,inputParameter);
-            return executeScript(command4Python);
+            return ExecuteScript(command4Python);
         }
         return null;
     }

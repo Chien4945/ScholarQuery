@@ -1,7 +1,5 @@
 package com.edu.cup;
 
-import javax.lang.model.element.NestingKind;
-
 /**
  * @Project: KG and QA
  * @Author: zhangjian
@@ -15,7 +13,7 @@ public class ScholarInfoModule {
 
     public ScholarInfoModule(String neo4jUser,String neo4jpasswd,String scholar){
         this.scholar = scholar;
-        this.Neo4jDB = new CypherQuery(neo4jUser,neo4jpasswd );
+        this.Neo4jDB = new CypherQuery(neo4jUser,neo4jpasswd);
     }
 
     public String scholarInfoVisualize(){
@@ -24,19 +22,19 @@ public class ScholarInfoModule {
 
     public String scholarSocialNet(){
         EchartsDraw echart = new EchartsDraw("socialNet");
-        String filepath = echart.saveHTML(this.Neo4jDB.getCoauthors(this.scholar));
+        String filepath = echart.SaveHTML(this.Neo4jDB.GetCoauthors(this.scholar),this.scholar);
         return filepath;
     }
 
-    public String scholarPublicationsNet(){
-        EchartsDraw echart = new EchartsDraw("publicationsNet");
-        String filepath = echart.saveHTML(this.Neo4jDB.getPublications(this.scholar));
-        return filepath;
-    }
+//    public String scholarPublicationsNet(){
+//        EchartsDraw echart = new EchartsDraw("publicationsNet");
+//        String filepath = echart.saveHTML(this.Neo4jDB.GetPublications(this.scholar));
+//        return filepath;
+//    }
 
     public String scholarCitesLine(){
         EchartsDraw echart = new EchartsDraw("citedLine");
-        String filepath = echart.saveHTML(this.Neo4jDB.getCitesperyears(this.scholar));
+        String filepath = echart.saveHTML(this.Neo4jDB.GetCitesperyears(this.scholar));
         return filepath;
     }
 
