@@ -9,21 +9,21 @@ from pyecharts.charts import Graph,Grid,Page,Line
 from pyecharts.commons.utils import JsCode
 from pyecharts.components import Table
 from pyecharts.options import ComponentTitleOpts
-import argparse
+import getopt
 import json
 import sys
 import time
 
 
 numTOP=20
-tmpPath="/Users/zhangjian/IdeaProjects/ScholarProject/tmp/"
+tmpPath="/Users/zhangjian/IdeaProjects/ScholarQuery/tmp/"
 
 def NetGraph(nodes,links,TYPE):
-    if TYPE == "socialNet":
+    if TYPE == "SocialNet":
         title='SocialNet'
         symbol='circle'
-    if TYPE == "publicationsNet":
-        title="PulicationsNet"
+    if TYPE == "PublicationsNet":
+        Title="PulicationsNet"
         symbol = 'diamond'
     sn = (
         Graph(init_opts=opts.InitOpts(chart_id=1,width="1350px",height="750px"))
@@ -102,24 +102,24 @@ def citedLine(x_data,y_data):
     return cl
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--type", type=str)
-    parser.add_argument("--message", type=str)
-    parser.add_argument("--scholar", type=str)
-    args = parser.parse_args()
-
-    if args.type == "socialNet":
-        print(args.message.replace(" - ",",").replace("，",","))
-        coauthorsInfo = json.loads(args.message.replace(" - ",",").replace("，",","))
+    opt,args= getopt.getopt(sys.argv[1:],"",["type=", "scholar=","message="])
+    for option, argument in opt:
+        if option in ("--type"):
+            Type = argument
+        if option in ("--scholar"):
+            scholar = argument
+        if option in ("--message"):
+            message = argument
+    if Type == "SocialNet":
+        coauthorsInfo = json.loads(message, strict=False)
         nodes_social = []
         links_social = []
-        nodes_social.append(opts.GraphNode(name=args.scholar, symbol_size=50))
+        nodes_social.append(opts.GraphNode(name=scholar, symbol_size=50))
         for scho in coauthorsInfo:
-            print(scho)
             nodes_social.append(opts.GraphNode(name=scho["name"], symbol_size=30))
-            links_social.append(opts.GraphLink(source=args.scholar, target=scho["name"]))
-        tempFile=tmpPath + '{}_sc.html'.format(args.scholar.replace(" ","_"))
-        NetGraph(nodes_social,links_social,args.type).render(tempFile)
+            links_social.append(opts.GraphLink(source=scholar, target=scho["name"]))
+        tempFile=tmpPath + '{}_sc.html'.format(scholar.replace(" ","_"))
+        NetGraph(nodes_social,links_social,Type).render(tempFile)
         print(tempFile)
     # elif TYPE == "publicationsNet":
     #     publicationsList = ' '.join(msgList)

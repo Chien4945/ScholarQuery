@@ -16,13 +16,15 @@ public class ScholarInfoModule {
         this.Neo4jDB = new CypherQuery(neo4jUser,neo4jpasswd);
     }
 
-    public String scholarInfoVisualize(){
-        return null;
+    public String ScholarInfoVisualize(){
+        EchartsDraw echart  = new EchartsDraw("InfoVis");
+        String filepath = echart.SaveHTML(this.Neo4jDB.//(this.scholar),this.scholar);
     }
 
-    public String scholarSocialNet(){
-        EchartsDraw echart = new EchartsDraw("socialNet");
+    public String ScholarSocialnet(){
+        EchartsDraw echart = new EchartsDraw("SocialNet");
         String filepath = echart.SaveHTML(this.Neo4jDB.GetCoauthors(this.scholar),this.scholar);
+        System.out.println(filepath);
         return filepath;
     }
 
@@ -34,7 +36,7 @@ public class ScholarInfoModule {
 
     public String scholarCitesLine(){
         EchartsDraw echart = new EchartsDraw("citedLine");
-        String filepath = echart.saveHTML(this.Neo4jDB.GetCitesperyears(this.scholar));
+        String filepath = echart.SaveHTML(this.Neo4jDB.GetCitesperyears(this.scholar));
         return filepath;
     }
 

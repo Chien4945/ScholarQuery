@@ -27,7 +27,7 @@ public class TEST {
 
     public void trySocialNet(){
         ScholarInfoModule T_T = new ScholarInfoModule("neo4j","neo123",this.scholar);
-        System.out.println(T_T.scholarSocialNet());
+        System.out.println(T_T.ScholarSocialnet());
     }
 
 //    public void tryPublicationsNet(){

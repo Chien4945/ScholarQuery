@@ -19,7 +19,7 @@ import java.io.InputStreamReader;
 public class EchartsDraw {
     private final String type;           // socialNet,publicationsNet,citedLine,INFO
     private final String drawscriptPath=
-            "/Users/zhangjian/IdeaProjects/ScholarProject/drawScript/drawScript.py";
+            "/Users/zhangjian/IdeaProjects/ScholarQuery/drawScript/drawScript.py";
 
     public EchartsDraw(String type){
         this.type=type;
@@ -33,6 +33,7 @@ public class EchartsDraw {
             String fPath = in.readLine();
             in.close();
             proc.waitFor();
+            System.out.println("EXECUTE!");
             return fPath;
         } catch (IOException e) {
             e.printStackTrace();
@@ -43,9 +44,9 @@ public class EchartsDraw {
     }
 
     public String SaveHTML(List<Map> resultList,String scholar){
-        if (this.type == "socialNet" ){
+        if (this.type == "SocialNet" ){
             String msg4Python = ToolBag.MaptoString(resultList);
-            String inputParameter = String.format("--type \"%s\" --message \"%s\" --scholar \"%s\"",this.type,msg4Python,scholar);
+            String inputParameter = String.format("--type=\"%s\" --message=\"%s\" --scholar=\"%s\"",this.type,msg4Python,scholar);
             String command4Python = String.format("python %s %s",drawscriptPath,inputParameter);
             return ExecuteScript(command4Python);
         }
@@ -58,7 +59,7 @@ public class EchartsDraw {
         return null;
     }
 
-    public String saveHTML(String citeData){
+    public String SaveHTML(String citeData){
         if (this.type == "citedLine"){
             String msg4Python = citeData;
             String inputParameter = String.format("%s %s",this.type,msg4Python);
