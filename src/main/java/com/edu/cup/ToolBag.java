@@ -14,6 +14,26 @@ import java.util.Set;
 
 public class ToolBag {
 
+//    public static String MaptoString(Map map) {
+//        Set<String> keySet = map.keySet();
+//        String mapString = "{";
+//        for (String item : keySet) {
+//            String valueMap = (String) map.get(item);
+//            valueMap =valueMap .replace("，",",");
+//            if (item.equals("cites_per_year")){
+//                valueMap = valueMap .replace(" - ","\\\",");
+//                valueMap = valueMap .replace(": ",":\\\"");
+//                valueMap = valueMap .replace("\'","\\\"");
+//                valueMap = valueMap .replace("}","\\\"}");
+//                mapString = mapString + "\\\"" + item + "\\\"" + ":" + valueMap + ",";
+//            }else{
+//                mapString = mapString + "\\\"" + item + "\\\"" + ":" + "\\\"" + valueMap + "\\\"" + ",";
+//            }
+//        }
+//        mapString = mapString.substring(0,mapString.length()-1);
+//        mapString = mapString+"}";
+//        return mapString;
+//    }
     public static String MaptoString(Map map) {
         Set<String> keySet = map.keySet();
         String mapString = "{";
@@ -21,13 +41,13 @@ public class ToolBag {
             String valueMap = (String) map.get(item);
             valueMap =valueMap .replace("，",",");
             if (item.equals("cites_per_year")){
-                valueMap = valueMap .replace(" - ","\\\",");
-                valueMap = valueMap .replace(": ",":\\\"");
-                valueMap = valueMap .replace("\'","\\\"");
-                valueMap = valueMap .replace("}","\\\"}");
-                mapString = mapString + "\\\"" + item + "\\\"" + ":" + valueMap + ",";
+                valueMap = valueMap .replace(" - ","\",");
+                valueMap = valueMap .replace(": ",":\"");
+                valueMap = valueMap .replace("\'","\"");
+                valueMap = valueMap .replace("}","\"}");
+                mapString = mapString + "\"" + item + "\"" + ":" + valueMap + ",";
             }else{
-                mapString = mapString + "\\\"" + item + "\\\"" + ":" + "\\\"" + valueMap + "\\\"" + ",";
+                mapString = mapString + "\"" + item + "\"" + ":" + "\"" + valueMap + "\"" + ",";
             }
         }
         mapString = mapString.substring(0,mapString.length()-1);
