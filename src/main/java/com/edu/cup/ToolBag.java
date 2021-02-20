@@ -7,7 +7,6 @@ package com.edu.cup;
  * @version: 1.0
  * @Date: 2021/1/16 14:14
  */
-import javax.swing.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -70,19 +69,20 @@ public class ToolBag {
 
     public static String RgbReturn(String HIndex){
         int Rcolor = 255;
-        int GBcolar = 126;
+        int Gcolor = 255;
+        int Bcolor = 0;
         int hIndex = (Integer.parseInt(HIndex));
 
         if (hIndex > 254){
             return "#" + Integer.toHexString(255) + Integer.toHexString(0) + Integer.toHexString(0) + Integer.toHexString(0) + Integer.toHexString(0);
         }
         else {
-            GBcolar = GBcolar -hIndex;
-            if(GBcolar > 15){
-                return "#"+Integer.toHexString(Rcolor)+Integer.toHexString(GBcolar)+Integer.toHexString(GBcolar);
+            Gcolor = Gcolor -hIndex;
+            if(Gcolor > 15){
+                return "#"+Integer.toHexString(Rcolor) + Integer.toHexString(Gcolor) + Integer.toHexString(0) + Integer.toHexString(Bcolor);
             }
             else {
-                return "#"+Integer.toHexString(Rcolor) + Integer.toHexString(0) + Integer.toHexString(GBcolar) + Integer.toHexString(0) + Integer.toHexString(GBcolar);
+                return "#"+Integer.toHexString(Rcolor) + Integer.toHexString(0) + Integer.toHexString(Gcolor) + Integer.toHexString(0) + Integer.toHexString(0) + Integer.toHexString(Bcolor);
             }
         }
     }
