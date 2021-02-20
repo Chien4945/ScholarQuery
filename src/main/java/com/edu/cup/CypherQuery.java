@@ -12,6 +12,7 @@ import static org.neo4j.driver.Values.parameters;
 
 import org.neo4j.driver.*;
 
+import java.awt.image.SinglePixelPackedSampleModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +29,7 @@ public class CypherQuery implements AutoCloseable{
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         this.driver.close();
     }
 
@@ -74,7 +75,6 @@ public class CypherQuery implements AutoCloseable{
         List<Map> results= MutiProperties(
                 "MATCH (a:SCHOLAR{name:$elem})-[:COAUTHOR]->(n) RETURN properties(n)",
                 message);
-        driver.close();
         return results;
     }
 
@@ -83,7 +83,6 @@ public class CypherQuery implements AutoCloseable{
         List<Map> results= MutiProperties(
                 "MATCH (a:SCHOLAR{name:$elem})-[:AUTHOR]->(n) RETURN properties(n)",
                 message);
-        driver.close();
         return results;
     }
 
@@ -91,10 +90,14 @@ public class CypherQuery implements AutoCloseable{
     public String GetCitesperyears(final String message){
         String Query = String.format("MATCH (n:SCHOLAR{name:$elem}) return n.%s","cites_per_year");
         String CitesList = SingleResults(Query,message);
-        driver.close();
         return CitesList;
     }
 
+    //查询单个学者信息
+    public Map GetAuthorinfo(final String message){
+        Map temp = SinglrProperties("MATCH (n:SCHOLAR{name:$elem}) RETURN properties(n)",message);
+        return temp;
+    }
     //查询某一领域的学者
     public String GetResearchdomain(final String message){
         return null;
