@@ -87,7 +87,7 @@ public class ScholarQuerySystem {
 
         JSONObject optTitle = new JSONObject();
         final String TITLE = String.format("关系图%s",message);
-        optTitle.put("text","关系图");
+        optTitle.put("text",TITLE);
         graphOpt.put("title",optTitle);
 
         JSONObject optTooltip=new JSONObject();
@@ -162,14 +162,17 @@ public class ScholarQuerySystem {
 
         //获取出版物信息
         List<Map> pubLications = Neo4jDB.GetPublications(this.message);
+        JSONObject pubOpt = new JSONObject();
         List<JSONObject> infoPublic = new ArrayList<>();
         for (Map pub : pubLications){
             JSONObject tmpPub = new JSONObject();
             tmpPub.put("title",pub.get("title"));
             tmpPub.put("pub_year",pub.get("pub_year"));
             tmpPub.put("num_citations",pub.get("num_citations"));
+            infoPublic.add(tmpPub);
             //List<String> authors = Neo4jDB.GetAuthors((String) pub.get("title"));
         }
+        pubOpt.put("publication",infoPublic);
 
 
 
@@ -180,6 +183,7 @@ public class ScholarQuerySystem {
         infoReturn.add(inforOpt);
         infoReturn.add(lineOpt);
         infoReturn.add(graphOpt);
+        infoReturn.add(pubOpt);
 
         Neo4jDB.close();
         return infoReturn;
