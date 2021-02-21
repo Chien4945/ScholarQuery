@@ -12,9 +12,7 @@ import static org.neo4j.driver.Values.parameters;
 
 import org.neo4j.driver.*;
 
-import java.awt.image.SinglePixelPackedSampleModel;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +31,20 @@ public class CypherQuery implements AutoCloseable{
         this.driver.close();
     }
 
+    //多结果返回查询
+    private List<String> MutiResults(final String Query,final String message){
+        try (Session session = driver.session()) {
+            return session.readTransaction(tx -> {
+                List<String> results = new ArrayList<>();
+                Result result = tx.run(Query, parameters("elem", message));
+                while (result.hasNext()) {
+                    String rs = result.next().get(0).asString();
+                    results.add(rs);
+                }return results;
+            });
+        }
+    }
+
     //多结果返回查询，返回多个结果的json信息。
     private List<Map> MutiProperties(final String Query, final String message ) {
         try (Session session = driver.session()) {
@@ -48,7 +60,7 @@ public class CypherQuery implements AutoCloseable{
     }
 
     //单结果返回查询
-    private String SingleResults(final String Query, final String message ) {
+    private String SingleResult(final String Query, final String message ) {
 //        Query:输入的查询语句
 //        message：查询的对象
         try (Session session = driver.session()) {
@@ -70,10 +82,15 @@ public class CypherQuery implements AutoCloseable{
         }
     }
 
+    //查询兴趣领域
+    public List<String> GetDomain(final String message){
+        return MutiResults("MATCH (a:SCHOLAR{name:$elem})-[:interest]->(n) RETURN n.domain",message);
+    }
+
     //查询合作学者
     public List<Map> GetCoauthors(final String message ) {
         List<Map> results= MutiProperties(
-                "MATCH (a:SCHOLAR{name:$elem})-[:COAUTHOR]->(n) RETURN properties(n)",
+                "MATCH (a:SCHOLAR{name:$elem})-[:coauthors]->(n) RETURN properties(n)",
                 message);
         return results;
     }
@@ -81,15 +98,21 @@ public class CypherQuery implements AutoCloseable{
     //查询出版物
     public List<Map> GetPublications(final String message ) {
         List<Map> results= MutiProperties(
-                "MATCH (a:SCHOLAR{name:$elem})-[:AUTHOR]->(n) RETURN properties(n)",
+                "MATCH (a:SCHOLAR{name:$elem})-[:publish]->(n) RETURN properties(n)",
                 message);
         return results;
+    }
+
+    //查询出版物作者(查找很慢)
+    public List<String> GetAuthors(final String message){
+        return MutiResults("match (a:SCHOLAR)-[:publish]->(n:PUBLICATION{title:$elem}) return a.name",
+                message);
     }
 
     //查询被引增减情况
     public String GetCitesperyears(final String message){
         String Query = String.format("MATCH (n:SCHOLAR{name:$elem}) return n.%s","cites_per_year");
-        String CitesList = SingleResults(Query,message);
+        String CitesList = SingleResult(Query,message);
         return CitesList;
     }
 
@@ -98,6 +121,8 @@ public class CypherQuery implements AutoCloseable{
         Map temp = SinglrProperties("MATCH (n:SCHOLAR{name:$elem}) RETURN properties(n)",message);
         return temp;
     }
+
+
     //查询某一领域的学者
     public String GetResearchdomain(final String message){
         return null;
