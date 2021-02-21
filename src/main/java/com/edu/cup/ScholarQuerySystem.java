@@ -55,7 +55,9 @@ public class ScholarQuerySystem {
         List<String> xdata = new ArrayList<>();
         List<String> ydata = new ArrayList<>();
         for (String key : tempCiteperyear.keySet()){
-            xdata.add(key);
+            if (key != "2021"){
+                xdata.add(key);
+            }
         }
         Collections.sort(xdata);
         for(String key : xdata){
