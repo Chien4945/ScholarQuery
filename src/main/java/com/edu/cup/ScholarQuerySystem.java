@@ -22,6 +22,9 @@ public class ScholarQuerySystem {
         this.Neo4jDB = new CypherQuery(neo4jUser,neo4jPasswd);
     }
 
+    public void ExceptClose(){
+        Neo4jDB.close();
+    }
 
     public List<JSONObject> ScholarInfo(){
         List<JSONObject> infoReturn = new ArrayList<>();
