@@ -189,11 +189,20 @@ public class ScholarQuerySystem {
         return infoReturn;
     }
 
+    public List<String> RecommandRandom(){
+        List<String> resultsRecommand = Neo4jDB.GetRecommmand();
+        Neo4jDB.close();
+        return resultsRecommand;
+    }
+
+    public List<String> FuzzyReturn(String msg){
+        List<String> fuzzyResult = Neo4jDB.ProbsReturn(msg);
+        Neo4jDB.close();
+        return fuzzyResult;
+    }
+
     public List<JSON> DomainCommon(){
         return null;
     }
 
-    public List<JSON> AffiliationCommon(){
-        return null;
-    }
 }

@@ -15,6 +15,7 @@ import org.neo4j.driver.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 
 public class CypherQuery implements AutoCloseable{
@@ -120,6 +121,36 @@ public class CypherQuery implements AutoCloseable{
     public Map GetAuthorinfo(final String message){
         Map temp = SinglrProperties("MATCH (n:SCHOLAR{name:$elem}) RETURN properties(n)",message);
         return temp;
+    }
+
+    //返回推荐搜索的学者
+    public List<String> GetRecommmand(){
+        String[] ENDS={"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
+        String[] STARTS={"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
+        Random randomIndex = new Random();
+        List<String> start = new ArrayList<>();
+        List<String> end = new ArrayList<>();
+        List<String> returnRecommand = new ArrayList<>();
+
+        String startQuery = String.format("match (n:SCHOLAR)" +
+                "where n.name ends with(\"%s\")" +
+                "return n.name  limit 3",STARTS[randomIndex.nextInt(52)]);
+        String endQuery = String.format("match (n:SCHOLAR)" +
+                "where n.name starts with(\"%s\")" +
+                "return n.name  limit 3",STARTS[randomIndex.nextInt(26)]);
+        start = MutiResults(startQuery,"name");
+        end = MutiResults(endQuery,"name");
+        returnRecommand.addAll(start);
+        returnRecommand.addAll(end);
+        return returnRecommand;
+    }
+
+    //返回模糊查询的可能结果
+    public List<String> ProbsReturn(String msg){
+        String probQuery = String.format("match (n:SCHOLAR)" +
+                "where n.name contains \"%s\"" +
+                "return n.name",msg) ;
+        return MutiResults(probQuery,"None");
     }
 
 
