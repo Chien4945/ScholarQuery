@@ -25,10 +25,12 @@ public class ScholarQuerySystem {
     public List<JSONObject> ScholarInfo(){
         List<JSONObject> profileOption = new ArrayList<>();
         EchartOption echartOption = new EchartOption();
-        JSONObject scholarJson = JSONObject.parseObject(ToolBag.MaptoString(Neo4jDB.GetAuthorinfo(message)));
+
+        JSONObject scholarJson = JSONObject.parseObject(ToolBag.MaptoString(Neo4jDB.GetAuthorinfo(this.message)));
         profileOption.add(echartOption.CreateProfile(scholarJson,Neo4jDB.GetDomain(this.message)));
         profileOption.add(echartOption.CreateLineChart(JSONObject.parseObject(scholarJson.getString("cites_per_year"))));
         profileOption.add(echartOption.CreateSocialnet(Neo4jDB.GetCoauthors(this.message),this.message));
+        profileOption.add(echartOption.PublicationTable(Neo4jDB.GetPublications(this.message)));
 
         Neo4jDB.close();
         return profileOption;

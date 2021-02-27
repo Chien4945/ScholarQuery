@@ -16,6 +16,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+
+/*Give up*/
 public class EchartsDraw {
     private final String type;           // socialNet,publicationsNet,citedLine,INFO
     private final String drawscriptPath=

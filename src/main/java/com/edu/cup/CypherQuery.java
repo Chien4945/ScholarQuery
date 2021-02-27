@@ -104,12 +104,6 @@ public class CypherQuery implements AutoCloseable{
         return results;
     }
 
-    //查询出版物作者(查找很慢)
-    public List<String> GetAuthors(final String message){
-        return MutiResults("match (a:SCHOLAR)-[:publish]->(n:PUBLICATION{title:$elem}) return a.name",
-                message);
-    }
-
     //查询被引增减情况
     public String GetCitesperyears(final String message){
         String Query = String.format("MATCH (n:SCHOLAR{name:$elem}) return n.%s","cites_per_year");
@@ -153,6 +147,13 @@ public class CypherQuery implements AutoCloseable{
         return MutiResults(probQuery,"None");
     }
 
+    //返回出版物的作者（目前速度还是太慢！暂时没法用）
+    public List<String> GetAuthors(String message){
+        //"MATCH (a:PUBLICATION{title:$elem})-[:author]->(n) return n.name"
+        String authorsQuery ="MATCH (n)-[:publish]->(a:PUBLICATION{title:$elem}) return n.name";
+        List<String> authors = MutiResults(authorsQuery,message);
+        return authors;
+    }
 
     //查询某一领域的学者
     public String GetResearchdomain(final String message){
