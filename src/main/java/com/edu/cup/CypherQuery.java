@@ -20,11 +20,10 @@ import java.util.Random;
 
 public class CypherQuery implements AutoCloseable{
     private final Driver driver;
-    private final String url = "bolt://10.16.30.69:7687";
 
 
-    public CypherQuery(String user, String password ) {
-        driver = GraphDatabase.driver( this.url, AuthTokens.basic( user, password ) );
+    public CypherQuery(String url,String user, String password ) {
+        driver = GraphDatabase.driver( url, AuthTokens.basic( user, password ) );
     }
 
     @Override

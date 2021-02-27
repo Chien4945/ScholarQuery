@@ -16,9 +16,9 @@ public class ScholarQuerySystem {
     private final String message;
     private final CypherQuery Neo4jDB;
 
-    public ScholarQuerySystem(String neo4jUser, String neo4jPasswd, String message){
+    public ScholarQuerySystem(String url,String neo4jUser, String neo4jPasswd, String message){
         this.message = message;
-        this.Neo4jDB = new CypherQuery(neo4jUser,neo4jPasswd);
+        this.Neo4jDB = new CypherQuery(url,neo4jUser,neo4jPasswd);
     }
 
 
