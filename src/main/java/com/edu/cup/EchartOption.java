@@ -183,4 +183,85 @@ public class EchartOption {
         pubTable.put("publications",publiCations);
         return pubTable;
     }
+
+    public JSONObject RiverChart(JSONObject jsonFile){
+        JSONObject riverOpt = new JSONObject(); //5 Parts: tooltip, legend, singleAxis, series, color
+
+
+        //tooltip
+        JSONObject tooltip =new JSONObject();//2 Parts: trigger,axisPointer
+
+
+        JSONObject axisPointerOftooltip = new JSONObject();//2 Parts:type, lineStyle
+
+        JSONObject lineStyleOftooltip = new JSONObject();
+        lineStyleOftooltip.put("color","rgba(0,0,0,0.2)");
+        lineStyleOftooltip.put("width",1);
+        lineStyleOftooltip.put("type","solid");
+
+        axisPointerOftooltip.put("type","line");
+        axisPointerOftooltip.put("lineStyle", lineStyleOftooltip);
+
+        tooltip.put("trigger","axis");
+        tooltip.put("axisPointer", axisPointerOftooltip);
+
+
+        //color
+        String[] color = {"#BBFFFF","#FFDAB9","#F0FFF0","#FFF0F5","#000080",
+                "#00BFFF","#00CD00","#00FF7F","#FFFF00","#FF00FF",
+                "#F0FFF0","#FF7F24","#9370DB","#FF6A6A","#FFFFE0",
+                "#C1FFC1","#FAF0E6","#00F5FF","#EE2C2C","#D2691E",
+        "#1C1C1C"};
+
+
+        //legend
+        JSONObject legend =new JSONObject(); //1 Part data
+        legend.put("data",ToolBag.KeyofJsonObj(JSONObject.parseObject(jsonFile.get(ToolBag.KeyofJsonObj(jsonFile).get(0)).toString())));
+
+
+        //singleAxis
+        JSONObject singleAxis = new JSONObject();//7 Parts:5 + axisPointer, splitLine
+
+            //axisPointer
+        JSONObject axisPointerOfsingleAxis = new JSONObject();//2 Parts: animation, label
+
+        JSONObject labelOfaxisPointerOfsingleAxis = new JSONObject();
+        labelOfaxisPointerOfsingleAxis.put("show",true);
+
+        axisPointerOfsingleAxis.put("animation",true);
+        axisPointerOfsingleAxis.put("label",labelOfaxisPointerOfsingleAxis);
+
+            //splitLine
+        JSONObject  splitLine = new JSONObject();//2 Parts:show, linStyle
+
+        JSONObject lineStyleOfsplitLine = new JSONObject();
+        lineStyleOfsplitLine.put("type","dashed");
+        lineStyleOfsplitLine.put("opacity",0.2);
+
+        splitLine.put("show",true);
+        splitLine.put("lineStyle",lineStyleOfsplitLine);
+
+        singleAxis.put("top",50);
+        singleAxis.put("bottom",50);
+        singleAxis.put("axisTick","{}");
+        singleAxis.put("axisLabe","{}");
+        singleAxis.put("type","time");
+        singleAxis.put("axisPointer",axisPointerOfsingleAxis);
+        singleAxis.put("splitLine",splitLine);
+
+
+        //series
+        JSONObject seriesOfriver = new JSONObject();//03.13
+
+
+
+        riverOpt.put("color",color);
+        riverOpt.put("tooltip",tooltip);
+        riverOpt.put("legend",legend);
+        riverOpt.put("singleAxis",singleAxis);
+        riverOpt.put("series",seriesOfriver);
+
+
+        return riverOpt;
+    }
 }

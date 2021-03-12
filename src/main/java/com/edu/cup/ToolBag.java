@@ -10,9 +10,7 @@ package com.edu.cup;
 import com.alibaba.fastjson.JSONObject;
 
 import java.io.*;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ToolBag {
 
@@ -110,5 +108,9 @@ public class ToolBag {
             e.printStackTrace();
             return jsonObj;
         }
+    }
+
+    public static List<String> KeyofJsonObj(JSONObject jsonObj){
+        return  new ArrayList<>(jsonObj.keySet());
     }
 }
