@@ -7,6 +7,9 @@ package com.edu.cup;
  * @version: 1.0
  * @Date: 2021/1/16 14:14
  */
+import com.alibaba.fastjson.JSONObject;
+
+import java.io.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -84,6 +87,28 @@ public class ToolBag {
             else {
                 return "#"+Integer.toHexString(Rcolor) + Integer.toHexString(0) + Integer.toHexString(Gcolor) + Integer.toHexString(0) + Integer.toHexString(0) + Integer.toHexString(Bcolor);
             }
+        }
+    }
+
+    public static JSONObject ReadJsonObj(String jsonPath){
+        JSONObject jsonObj =new JSONObject();
+        try {
+            File jsonFile = new File(jsonPath);
+            FileReader fileReader = new FileReader(jsonFile);
+
+            Reader reader = new InputStreamReader(new FileInputStream(jsonFile),"utf-8");
+            int ch = 0;
+            StringBuffer sb = new StringBuffer();
+            while ((ch = reader.read()) != -1) {
+                sb.append((char) ch);
+            }
+            fileReader.close();
+            reader.close();
+            jsonObj = JSONObject.parseObject(sb.toString());
+            return jsonObj;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return jsonObj;
         }
     }
 }
