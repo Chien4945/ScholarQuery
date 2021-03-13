@@ -48,14 +48,37 @@ public class ScholarQuerySystem {
         return fuzzyResult;
     }
 
+    public List<JSONObject> TopicEvolution(String path){
+        EchartOption echartOption = new EchartOption();
+        JSONObject jsonFile = ToolBag.ReadJsonObj(path);
+        List<JSONObject> tpcevlOpt = new ArrayList<>();
+        JSONObject flagSucc = new JSONObject();
+        try{
+            //River
+            JSONObject riverOpt = echartOption.RiverChart(jsonFile);
+            //bar
+            JSONObject klineOpt = echartOption.KlineTopic(jsonFile);
+
+            //成功标志
+            flagSucc.put("flag",true);
+
+
+            tpcevlOpt.add(flagSucc);
+            tpcevlOpt.add(riverOpt);
+            tpcevlOpt.add(klineOpt);
+        }catch (Exception e){
+            //失败标志
+            flagSucc.put("flag",true);
+
+            tpcevlOpt.add(flagSucc);
+        }
+
+        return tpcevlOpt;
+    }
+
     public List<JSON> DomainCommon(){
         return null;
     }
 
 }
 
-/**
-0225晚任务：
-    1.学者配置信息重新整理，按类型分开；
-    2.修改配置：title，调整斥力...；
-**/
