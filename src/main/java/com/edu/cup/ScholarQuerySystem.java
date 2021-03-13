@@ -48,7 +48,7 @@ public class ScholarQuerySystem {
         return fuzzyResult;
     }
 
-    public List<JSONObject> TopicEvolution(String path){
+    public static List<JSONObject> TopicEvolution(String path){
         EchartOption echartOption = new EchartOption();
         JSONObject jsonFile = ToolBag.ReadJsonObj(path);
         List<JSONObject> tpcevlOpt = new ArrayList<>();
