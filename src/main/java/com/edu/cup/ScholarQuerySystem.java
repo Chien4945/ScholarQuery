@@ -53,6 +53,7 @@ public class ScholarQuerySystem {
         JSONObject jsonFile = ToolBag.ReadJsonObj(path);
         List<JSONObject> tpcevlOpt = new ArrayList<>();
         JSONObject flagSucc = new JSONObject();
+
         try{
             //River
             JSONObject riverOpt = echartOption.RiverChart(jsonFile);
