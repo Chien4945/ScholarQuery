@@ -296,4 +296,48 @@ public class EchartOption {
 
         return riverOpt;
     }
+
+    public JSONObject KlineTopic(JSONObject jsonObj){
+        Float thresholdFrequency = new Float(37.0);
+
+        JSONObject klineOpt = new JSONObject();//3 parts: title,xAxis,yAxis,series
+
+        JSONObject xAxis = new JSONObject();
+        JSONObject axisLabel =new JSONObject();
+        axisLabel.put("interval",0);
+
+        xAxis.put("data",ToolBag.Top5Wdfreq(jsonObj));
+        xAxis.put("axisLabel",axisLabel);
+
+
+        JSONObject yAxis = new JSONObject();
+        JSONObject axisLine = new JSONObject();
+        axisLine.put("show",false);
+        yAxis.put("min",2005);
+        yAxis.put("max",2025);
+        yAxis.put("minInterval",1);
+        yAxis.put("maxInterval",1);
+        yAxis.put("axisLine",axisLine);
+        yAxis.put("name","Top5's\n Distribution");
+
+
+        List<JSONObject> seriesOfkline = new ArrayList<>();
+        JSONObject seriesOfS = new JSONObject();
+
+        seriesOfS.put("type","k");
+
+        List<List<Float>> dataOpt = new ArrayList<>();
+        for (String topWD:ToolBag.Top5Wdfreq(jsonObj)){
+            dataOpt.add(ToolBag.SpanUpDown(topWD,jsonObj,thresholdFrequency));
+        }
+
+        seriesOfS.put("data",dataOpt);
+
+        seriesOfkline.add(seriesOfS);
+
+        klineOpt.put("xAxis",xAxis);
+        klineOpt.put("yAxis",yAxis);
+        klineOpt.put("series",seriesOfkline);
+        return klineOpt;
+    }
 }
