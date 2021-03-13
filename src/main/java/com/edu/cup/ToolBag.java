@@ -37,6 +37,37 @@ public class ToolBag {
     }
  */
 
+    private static boolean DateMorethan(String dateA , String dateB){
+    List<String> compareStrA = new ArrayList<>(Arrays.asList(dateA.split("/")));
+    List<String> compareStrB = new ArrayList<>(Arrays.asList(dateB.split("/")));
+    if (Integer.parseInt(compareStrA.get(0))>Integer.parseInt(compareStrB.get(0))){
+        return true;
+    }
+    else if(Integer.parseInt(compareStrA.get(0))<Integer.parseInt(compareStrB.get(0))){
+        return false;
+    }
+    else{
+        if (Integer.parseInt(compareStrA.get(1))>Integer.parseInt(compareStrB.get(1))){
+            return true;
+        }
+        else if(Integer.parseInt(compareStrA.get(1))<Integer.parseInt(compareStrB.get(1))){
+            return false;
+        }
+    }
+    return false; //相等
+}
+
+    private static float Date2Float(String date){
+        List<String> dateStr = new ArrayList<>(Arrays.asList(date.split("/")));
+        Float integerPart = Float.parseFloat(dateStr.get(0));
+        Float decimalPart = Float.parseFloat(dateStr.get(1));
+        decimalPart = decimalPart/12;
+        return integerPart+decimalPart;
+    }
+
+
+
+
     public static String MaptoString(Map map) {
         Set<String> keySet = map.keySet();
         String mapString = "{";
@@ -114,26 +145,6 @@ public class ToolBag {
         return  new ArrayList<>(jsonObj.keySet());
     }
 
-    private static boolean DateMorethan(String dateA , String dateB){
-        List<String> compareStrA = new ArrayList<>(Arrays.asList(dateA.split("/")));
-        List<String> compareStrB = new ArrayList<>(Arrays.asList(dateB.split("/")));
-        if (Integer.parseInt(compareStrA.get(0))>Integer.parseInt(compareStrB.get(0))){
-            return true;
-        }
-        else if(Integer.parseInt(compareStrA.get(0))<Integer.parseInt(compareStrB.get(0))){
-            return false;
-        }
-        else{
-            if (Integer.parseInt(compareStrA.get(1))>Integer.parseInt(compareStrB.get(1))){
-                return true;
-            }
-            else if(Integer.parseInt(compareStrA.get(1))<Integer.parseInt(compareStrB.get(1))){
-                return false;
-            }
-        }
-        return false; //相等
-    }
-
     public static List<String> DateSort(List<String> DateList){
         //Input : ["2020/12","2021/1","2021/2","2021/3"
         List<String> sortDate = new ArrayList<>();
@@ -151,5 +162,55 @@ public class ToolBag {
             DateList.remove(minIndex);
         }
         return sortDate;
+    }
+
+    public static List<String> Top5Wdfreq(JSONObject jsonObj){
+         List<String> wordsAll = new ArrayList<>(JSONObject.parseObject(jsonObj.get(ToolBag.KeyofJsonObj(jsonObj).get(0)).toString()).keySet());
+         List<String> Top5wd= new ArrayList<>();
+         JSONObject FreStac = new JSONObject();
+
+         for (String word: wordsAll){
+             FreStac.put(word,0.0);
+         }
+         for(String keyOfjsonObj:jsonObj.keySet()){
+             JSONObject dateEle = JSONObject.parseObject(jsonObj.get(keyOfjsonObj).toString());
+             for(String wdOfdate : dateEle.keySet()){
+                 float valFreqsum = FreStac.getFloat(wdOfdate) + dateEle.getFloat(wdOfdate);
+                 FreStac.put(wdOfdate,valFreqsum);
+             }
+         }
+         for (int count = 0;count<5;++count){
+             float maxFreq = 0;
+             String topFreq = null ;
+             for(String keyOfFrest:FreStac.keySet()){
+                 if (FreStac.getFloat(keyOfFrest)>maxFreq){
+                     maxFreq = FreStac.getFloat(keyOfFrest);
+                     topFreq = keyOfFrest;
+                 }
+             }
+             Top5wd.add(topFreq);
+             FreStac.remove(topFreq);
+         }
+         return Top5wd;
+    }
+
+    public static List<Float> SpanUpDown(String word,JSONObject jsonObj,Float threshold){
+        Float yearStart =new Float(-0.1);
+        Float yearEnd =new Float(-0.1);
+
+        for(String date:DateSort(KeyofJsonObj(jsonObj))){
+            if (JSONObject.parseObject(jsonObj.get(date).toString()).getFloat(word) >threshold ){
+                if (yearStart < 0){
+                    yearStart =  Date2Float(date);
+                }
+                yearEnd =Date2Float(date);
+            }
+        }
+        List<Float> dataOpt =new ArrayList<>();
+        dataOpt.add(yearStart);
+        dataOpt.add(yearEnd);
+        dataOpt.add(yearStart);
+        dataOpt.add(yearEnd);
+        return dataOpt;
     }
 }
