@@ -184,7 +184,7 @@ public class EchartOption {
         return pubTable;
     }
 
-    public JSONObject RiverChart(JSONObject jsonFile){
+    public JSONObject RiverChart(JSONObject jsonObj){
         JSONObject riverOpt = new JSONObject(); //5 Parts: tooltip, legend, singleAxis, series, color
 
 
@@ -211,12 +211,12 @@ public class EchartOption {
                 "#00BFFF","#00CD00","#00FF7F","#FFFF00","#FF00FF",
                 "#F0FFF0","#FF7F24","#9370DB","#FF6A6A","#FFFFE0",
                 "#C1FFC1","#FAF0E6","#00F5FF","#EE2C2C","#D2691E",
-        "#1C1C1C"};
+        "#A52A2A","#2E8B57","#1C1C1C"};
 
 
         //legend
         JSONObject legend =new JSONObject(); //1 Part data
-        legend.put("data",ToolBag.KeyofJsonObj(JSONObject.parseObject(jsonFile.get(ToolBag.KeyofJsonObj(jsonFile).get(0)).toString())));
+        legend.put("data",ToolBag.KeyofJsonObj(JSONObject.parseObject(jsonObj.get(ToolBag.KeyofJsonObj(jsonObj).get(0)).toString())));
 
 
         //singleAxis
@@ -251,7 +251,39 @@ public class EchartOption {
 
 
         //series
-        JSONObject seriesOfriver = new JSONObject();//03.13
+        List<JSONObject> seriesOption = new ArrayList<>();
+        JSONObject seriesOfriver = new JSONObject();//3 Parts: type, emphasis, data
+
+            //itemStyle
+        JSONObject itemStyle = new JSONObject();//1 Parts
+        JSONObject emphasisOfseries = new JSONObject(); //2 Parts
+
+        emphasisOfseries.put("shadowBlur",20);
+        emphasisOfseries.put("shadowColor","rgba(0, 0, 0, 0.8)");
+
+        itemStyle.put("emphasis",emphasisOfseries);
+
+
+            //data
+        List<List<Object>> dataOfseries = new ArrayList<>();
+
+        for(String date:ToolBag.DateSort(ToolBag.KeyofJsonObj(jsonObj))){
+            JSONObject dateTpc = JSONObject.parseObject(jsonObj.get(date).toString());
+
+            for(String keyToc:dateTpc.keySet()){
+                List<Object> dateEle = new ArrayList<>();
+                dateEle.add(date);
+                dateEle.add(Float.parseFloat(dateTpc.getString(keyToc)));
+                dateEle.add(keyToc);
+                dataOfseries.add(dateEle);
+            }
+        }
+
+        seriesOfriver.put("type","themeRiver");
+        seriesOfriver.put("itemStyle",itemStyle);
+        seriesOfriver.put("data",dataOfseries);
+
+        seriesOption.add(seriesOfriver);
 
 
 
@@ -259,7 +291,7 @@ public class EchartOption {
         riverOpt.put("tooltip",tooltip);
         riverOpt.put("legend",legend);
         riverOpt.put("singleAxis",singleAxis);
-        riverOpt.put("series",seriesOfriver);
+        riverOpt.put("series",seriesOption);
 
 
         return riverOpt;
