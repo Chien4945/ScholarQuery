@@ -113,4 +113,43 @@ public class ToolBag {
     public static List<String> KeyofJsonObj(JSONObject jsonObj){
         return  new ArrayList<>(jsonObj.keySet());
     }
+
+    private static boolean DateMorethan(String dateA , String dateB){
+        List<String> compareStrA = new ArrayList<>(Arrays.asList(dateA.split("/")));
+        List<String> compareStrB = new ArrayList<>(Arrays.asList(dateB.split("/")));
+        if (Integer.parseInt(compareStrA.get(0))>Integer.parseInt(compareStrB.get(0))){
+            return true;
+        }
+        else if(Integer.parseInt(compareStrA.get(0))<Integer.parseInt(compareStrB.get(0))){
+            return false;
+        }
+        else{
+            if (Integer.parseInt(compareStrA.get(1))>Integer.parseInt(compareStrB.get(1))){
+                return true;
+            }
+            else if(Integer.parseInt(compareStrA.get(1))<Integer.parseInt(compareStrB.get(1))){
+                return false;
+            }
+        }
+        return false; //相等
+    }
+
+    public static List<String> DateSort(List<String> DateList){
+        //Input : ["2020/12","2021/1","2021/2","2021/3"
+        List<String> sortDate = new ArrayList<>();
+        int lenDatelist=DateList.size();
+
+        for (int count=0;count<lenDatelist;++count){
+            int minIndex = 0;
+            int goIndex = 0;
+            for(;goIndex<DateList.size();++goIndex){
+                if(DateMorethan(DateList.get(minIndex),DateList.get(goIndex))==true){
+                    minIndex=goIndex;
+                }
+            }
+            sortDate.add(DateList.get(minIndex));
+            DateList.remove(minIndex);
+        }
+        return sortDate;
+    }
 }
