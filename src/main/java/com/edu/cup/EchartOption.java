@@ -184,7 +184,21 @@ public class EchartOption {
         return pubTable;
     }
 
-    public JSONObject RiverChart(JSONObject jsonObj){
+    public JSONObject RiverChart(JSONObject jsonObj,JSONObject timeSpan){
+        //时间跨度处理
+        String dateStart = ToolBag.JsDatePass(timeSpan.getString("startDate"));//输入的起始日期
+        String dateOver =ToolBag.JsDatePass(timeSpan.getString("overDate"));//输入的结束日期
+        List<String> dateList = ToolBag.DateSort(ToolBag.KeyofJsonObj(jsonObj)); //保存数据的跨度
+        List<String> spanList =new ArrayList<>();
+        for (String dateTmp:dateList){
+            if ((ToolBag.DateMorethan(dateTmp,dateStart))&&(ToolBag.DateMorethan(dateOver,dateTmp))){
+                spanList.add(dateTmp);
+            }
+        }
+
+        int dateSpan = spanList.size();
+        int monthCut = dateSpan/20 + 1;
+
         JSONObject riverOpt = new JSONObject(); //5 Parts: tooltip, legend, singleAxis, series, color
 
 
@@ -267,15 +281,20 @@ public class EchartOption {
             //data
         List<List<Object>> dataOfseries = new ArrayList<>();
 
-        for(String date:ToolBag.DateSort(ToolBag.KeyofJsonObj(jsonObj))){
-            JSONObject dateTpc = JSONObject.parseObject(jsonObj.get(date).toString());
+        int countCut = 0;
+        for(String date:spanList){
 
-            for(String keyToc:dateTpc.keySet()){
-                List<Object> dateEle = new ArrayList<>();
-                dateEle.add(date);
-                dateEle.add(Float.parseFloat(dateTpc.getString(keyToc)));
-                dateEle.add(keyToc);
-                dataOfseries.add(dateEle);
+            countCut+=1;
+            if (countCut%monthCut == 0){
+                JSONObject dateTpc = JSONObject.parseObject(jsonObj.get(date).toString());
+
+                for(String keyToc:dateTpc.keySet()){
+                    List<Object> dateEle = new ArrayList<>();
+                    dateEle.add(date);
+                    dateEle.add(Float.parseFloat(dateTpc.getString(keyToc)));
+                    dateEle.add(keyToc);
+                    dataOfseries.add(dateEle);
+                }
             }
         }
 
