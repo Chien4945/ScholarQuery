@@ -37,25 +37,7 @@ public class ToolBag {
     }
  */
 
-    private static boolean DateMorethan(String dateA , String dateB){
-    List<String> compareStrA = new ArrayList<>(Arrays.asList(dateA.split("/")));
-    List<String> compareStrB = new ArrayList<>(Arrays.asList(dateB.split("/")));
-    if (Integer.parseInt(compareStrA.get(0))>Integer.parseInt(compareStrB.get(0))){
-        return true;
-    }
-    else if(Integer.parseInt(compareStrA.get(0))<Integer.parseInt(compareStrB.get(0))){
-        return false;
-    }
-    else{
-        if (Integer.parseInt(compareStrA.get(1))>Integer.parseInt(compareStrB.get(1))){
-            return true;
-        }
-        else if(Integer.parseInt(compareStrA.get(1))<Integer.parseInt(compareStrB.get(1))){
-            return false;
-        }
-    }
-    return false; //相等
-}
+
 
     private static float Date2Float(String date){
         List<String> dateStr = new ArrayList<>(Arrays.asList(date.split("/")));
@@ -67,6 +49,25 @@ public class ToolBag {
 
 
 
+    public static boolean DateMorethan(String dateA , String dateB){
+        List<String> compareStrA = new ArrayList<>(Arrays.asList(dateA.split("/")));
+        List<String> compareStrB = new ArrayList<>(Arrays.asList(dateB.split("/")));
+        if (Integer.parseInt(compareStrA.get(0))>Integer.parseInt(compareStrB.get(0))){
+            return true;
+        }
+        else if(Integer.parseInt(compareStrA.get(0))<Integer.parseInt(compareStrB.get(0))){
+            return false;
+        }
+        else{
+            if (Integer.parseInt(compareStrA.get(1))>Integer.parseInt(compareStrB.get(1))){
+                return true;
+            }
+            else if(Integer.parseInt(compareStrA.get(1))<Integer.parseInt(compareStrB.get(1))){
+                return false;
+            }
+        }
+        return false; //相等
+    }
 
     public static String MaptoString(Map map) {
         Set<String> keySet = map.keySet();
@@ -117,6 +118,23 @@ public class ToolBag {
                 return "#"+Integer.toHexString(Rcolor) + Integer.toHexString(0) + Integer.toHexString(Gcolor) + Integer.toHexString(0) + Integer.toHexString(0) + Integer.toHexString(Bcolor);
             }
         }
+    }
+
+    public static String JsDatePass(String dateJS){
+        return dateJS.replace("-","/");
+    }
+
+    public static int MonthCalcu(String dateStart,String dateOver){
+        //计算日期间的月份差.
+        List<String> dateA = new ArrayList<>(Arrays.asList(dateStart.split("/")));
+        int yearA = Integer.parseInt(dateA.get(0));
+        int monthA =Integer.parseInt(dateA.get(1));
+
+        List<String> dateB = new ArrayList<>(Arrays.asList(dateOver.split("/")));
+        int yearB = Integer.parseInt(dateB.get(0));
+        int monthB = Integer.parseInt(dateB.get(1));
+
+        return (yearB-yearA-1)*12+(12-monthA+1)+(monthB);
     }
 
     public static JSONObject ReadJsonObj(String jsonPath){
