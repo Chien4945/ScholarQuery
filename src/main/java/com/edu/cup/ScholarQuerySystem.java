@@ -48,7 +48,7 @@ public class ScholarQuerySystem {
         return fuzzyResult;
     }
 
-    public static List<JSONObject> TopicEvolution(String path){
+    public static List<JSONObject> TopicEvolution(String path,JSONObject timeSpan){
         EchartOption echartOption = new EchartOption();
         JSONObject jsonFile = ToolBag.ReadJsonObj(path);
         List<JSONObject> tpcevlOpt = new ArrayList<>();
@@ -56,7 +56,7 @@ public class ScholarQuerySystem {
 
         try{
             //River
-            JSONObject riverOpt = echartOption.RiverChart(jsonFile);
+            JSONObject riverOpt = echartOption.RiverChart(jsonFile,timeSpan);
             //bar
             JSONObject klineOpt = echartOption.KlineTopic(jsonFile);
 
@@ -69,7 +69,7 @@ public class ScholarQuerySystem {
             tpcevlOpt.add(klineOpt);
         }catch (Exception e){
             //失败标志
-            flagSucc.put("flag",true);
+            flagSucc.put("flag",false);
 
             tpcevlOpt.add(flagSucc);
         }
