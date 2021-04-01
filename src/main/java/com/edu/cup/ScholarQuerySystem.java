@@ -2,6 +2,7 @@ package com.edu.cup;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.neo4j.driver.internal.shaded.io.netty.handler.codec.json.JsonObjectDecoder;
 
 import java.util.*;
 
@@ -48,11 +49,10 @@ public class ScholarQuerySystem {
         return fuzzyResult;
     }
 
-    public static List<JSONObject> TopicEvolution(String path,JSONObject timeSpan){
+    public static JSONObject TopicEvolution(String path,JSONObject timeSpan){
         EchartOption echartOption = new EchartOption();
         JSONObject jsonFile = ToolBag.ReadJsonObj(path);
-        List<JSONObject> tpcevlOpt = new ArrayList<>();
-        JSONObject flagSucc = new JSONObject();
+        JSONObject tpcevlOpt = new JSONObject();
 
         try{
             //River
@@ -61,17 +61,14 @@ public class ScholarQuerySystem {
             JSONObject klineOpt = echartOption.KlineTopic(jsonFile);
 
             //成功标志
-            flagSucc.put("flag",true);
+            tpcevlOpt.put("flag",true);
 
+            tpcevlOpt.put("river",riverOpt);
+            tpcevlOpt.put("kilne",klineOpt);
 
-            tpcevlOpt.add(flagSucc);
-            tpcevlOpt.add(riverOpt);
-            tpcevlOpt.add(klineOpt);
         }catch (Exception e){
             //失败标志
-            flagSucc.put("flag",false);
-
-            tpcevlOpt.add(flagSucc);
+            tpcevlOpt.put("flag",false);
         }
 
         return tpcevlOpt;
