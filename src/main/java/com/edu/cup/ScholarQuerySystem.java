@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.neo4j.driver.internal.shaded.io.netty.handler.codec.json.JsonObjectDecoder;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Project: KG and QA
@@ -49,22 +50,21 @@ public class ScholarQuerySystem {
         return fuzzyResult;
     }
 
-    public static JSONObject TopicEvolution(String path,JSONObject timeSpan){
+    public static JSONObject TopicEvolution(String path,JSONObject timeSpan,int tpcNum){
         EchartOption echartOption = new EchartOption();
         JSONObject jsonFile = ToolBag.ReadJsonObj(path);
         JSONObject tpcevlOpt = new JSONObject();
-
         try{
             //River
-            JSONObject riverOpt = echartOption.RiverChart(jsonFile,timeSpan);
+            JSONObject riverOpt = echartOption.RiverChart(jsonFile,timeSpan,tpcNum);
             //bar
             JSONObject klineOpt = echartOption.KlineTopic(jsonFile);
-
+            System.out.println(klineOpt);
             //成功标志
             tpcevlOpt.put("flag",true);
 
             tpcevlOpt.put("river",riverOpt);
-            tpcevlOpt.put("kilne",klineOpt);
+            tpcevlOpt.put("kline",klineOpt);
 
         }catch (Exception e){
             //失败标志
@@ -72,6 +72,48 @@ public class ScholarQuerySystem {
         }
 
         return tpcevlOpt;
+    }
+
+    public static JSONObject TopicWords(String pathFre,String pathSen,JSONObject timeSpan,int tpcNum){
+        int cutEdge = 20;
+        JSONObject fileFre = ToolBag.ReadJsonObj(pathFre);
+        JSONObject fileSen = ToolBag.ReadJsonObj(pathSen);
+        JSONObject tpdWds = new JSONObject();
+        try {
+            List<String> topFre = ToolBag.TopWdfreq(fileFre,tpcNum,timeSpan);
+            List<JSONObject> msgJson = new ArrayList<>();
+
+            for (String wd : topFre){
+                JSONObject msgTmp = new JSONObject();
+                msgTmp.put("word",wd);
+
+                List<JSONObject> senOpt = new ArrayList<>();
+
+                List<String> wdSen = (List<String>) fileSen.get(wd);
+                Random random = new Random();
+                int rIndex = random.nextInt(wdSen.size() - cutEdge);
+                List<String> senCut = wdSen.subList(rIndex%wdSen.size(),(rIndex+cutEdge-1)% wdSen.size());
+
+                for(String sen : senCut){
+                    List<String> wordOFSen = Arrays.asList(sen.split(" "));
+                    int splitIndex = wordOFSen.indexOf(wd);
+                    if (splitIndex >0){
+                        JSONObject senObj = new JSONObject();
+                        senObj.put("head",wordOFSen.subList(0,splitIndex).stream().collect(Collectors.joining(" ")));
+                        senObj.put("body",wd);
+                        senObj.put("tail",wordOFSen.subList(splitIndex+1,wordOFSen.size()).stream().collect(Collectors.joining(" ")));
+                        senOpt.add(senObj);
+                    }
+                }
+                msgTmp.put("sentences",senOpt);
+                msgJson.add(msgTmp);
+            }
+            tpdWds.put("flag",true);
+            tpdWds.put("msg",msgJson);
+        }catch (Exception e){
+            tpdWds.put("flag",false);
+        }
+        return tpdWds;
     }
 
     public List<JSON> DomainCommon(){
