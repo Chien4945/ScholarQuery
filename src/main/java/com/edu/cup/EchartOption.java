@@ -184,7 +184,7 @@ public class EchartOption {
         return pubTable;
     }
 
-    public JSONObject RiverChart(JSONObject jsonObj,JSONObject timeSpan){
+    public JSONObject RiverChart(JSONObject jsonObj,JSONObject timeSpan,int tpcNum){
         //时间跨度处理
         String dateStart = ToolBag.JsDatePass(timeSpan.getString("startDate"));//输入的起始日期
         String dateOver =ToolBag.JsDatePass(timeSpan.getString("overDate"));//输入的结束日期
@@ -281,14 +281,14 @@ public class EchartOption {
             //data
         List<List<Object>> dataOfseries = new ArrayList<>();
 
+        List<String> topWord = ToolBag.TopWdfreq(jsonObj,tpcNum,timeSpan);
         int countCut = 0;
         for(String date:spanList){
 
             countCut+=1;
             if (countCut%monthCut == 0){
                 JSONObject dateTpc = JSONObject.parseObject(jsonObj.get(date).toString());
-
-                for(String keyToc:dateTpc.keySet()){
+                for(String keyToc:topWord){
                     List<Object> dateEle = new ArrayList<>();
                     dateEle.add(date);
                     dateEle.add(Float.parseFloat(dateTpc.getString(keyToc)));
@@ -311,8 +311,6 @@ public class EchartOption {
         riverOpt.put("legend",legend);
         riverOpt.put("singleAxis",singleAxis);
         riverOpt.put("series",seriesOption);
-
-
         return riverOpt;
     }
 
@@ -325,7 +323,10 @@ public class EchartOption {
         JSONObject axisLabel =new JSONObject();
         axisLabel.put("interval",0);
 
-        xAxis.put("data",ToolBag.Top5Wdfreq(jsonObj));
+        JSONObject timeSpantmp=new JSONObject();
+        timeSpantmp.put("startDate","1980/1");
+        timeSpantmp.put("overDate","2021/3");
+        xAxis.put("data",ToolBag.TopWdfreq(jsonObj,5,timeSpantmp));
         xAxis.put("axisLabel",axisLabel);
 
 
@@ -346,7 +347,7 @@ public class EchartOption {
         seriesOfS.put("type","k");
 
         List<List<Float>> dataOpt = new ArrayList<>();
-        for (String topWD:ToolBag.Top5Wdfreq(jsonObj)){
+        for (String topWD:ToolBag.TopWdfreq(jsonObj,5,timeSpantmp)){
             dataOpt.add(ToolBag.SpanUpDown(topWD,jsonObj,thresholdFrequency));
         }
 
