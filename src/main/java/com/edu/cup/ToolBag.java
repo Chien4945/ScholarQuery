@@ -182,7 +182,8 @@ public class ToolBag {
         return sortDate;
     }
 
-    public static List<String> Top5Wdfreq(JSONObject jsonObj){
+    public static List<String> TopWdfreq(JSONObject jsonObj,int num,JSONObject timeSpan){
+        //统计在一定时间跨度timespan内，频度前num个词
          List<String> wordsAll = new ArrayList<>(JSONObject.parseObject(jsonObj.get(ToolBag.KeyofJsonObj(jsonObj).get(0)).toString()).keySet());
          List<String> Top5wd= new ArrayList<>();
          JSONObject FreStac = new JSONObject();
@@ -190,14 +191,25 @@ public class ToolBag {
          for (String word: wordsAll){
              FreStac.put(word,0.0);
          }
-         for(String keyOfjsonObj:jsonObj.keySet()){
+
+        String dateStart = ToolBag.JsDatePass(timeSpan.getString("startDate"));//输入的起始日期
+        String dateOver =ToolBag.JsDatePass(timeSpan.getString("overDate"));//输入的结束日期
+        List<String> dateList = ToolBag.DateSort(ToolBag.KeyofJsonObj(jsonObj)); //保存数据的跨度
+        List<String> spanList =new ArrayList<>();
+        for (String dateTmp:dateList){
+            if ((ToolBag.DateMorethan(dateTmp,dateStart))&&(ToolBag.DateMorethan(dateOver,dateTmp))){
+                spanList.add(dateTmp);
+            }
+        }
+
+         for(String keyOfjsonObj:spanList){
              JSONObject dateEle = JSONObject.parseObject(jsonObj.get(keyOfjsonObj).toString());
              for(String wdOfdate : dateEle.keySet()){
                  float valFreqsum = FreStac.getFloat(wdOfdate) + dateEle.getFloat(wdOfdate);
                  FreStac.put(wdOfdate,valFreqsum);
              }
          }
-         for (int count = 0;count<5;++count){
+         for (int count = 0;count<num;++count){
              float maxFreq = 0;
              String topFreq = null ;
              for(String keyOfFrest:FreStac.keySet()){
