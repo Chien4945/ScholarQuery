@@ -54,14 +54,32 @@ public class TomcatService extends HttpServlet {
         }else if (hint.equals("Topic")){
             String pathFreOpt = "/Users/zhangjian/Desktop/TopicFrequence.json";
             String pathSenOpt = "/Users/zhangjian/Desktop/TopicSen.json";
-
             JSONObject timeSpan = JSONObject.parseObject(request.getParameter("timespan"));
-            List<JSONObject> evlResult = ScholarQuerySystem.TopicEvolution(pathFreOpt,timeSpan);
+            int numTopic =Integer.parseInt(request.getParameter("numTopic").toString());
+            String message = request.getParameter("message");
+            String word = request.getParameter("word");
+
+            if (message.equals("river")){
+                JSONObject riverResult = ScholarQuerySystem.TopicEvolution(pathFreOpt,timeSpan,numTopic);
+                Writer out = response.getWriter();
+                out.write(JSON.toJSONString(riverResult));
+                out.close();
+            }else if (message.equals("words")){
+                JSONObject wordsResult = new JSONObject();
+                if (word.equals("all")){
+                    wordsResult = ScholarQuerySystem.TopicWords(pathFreOpt,pathSenOpt,timeSpan,numTopic);
+                }else{
+                    String wordSingle = request.getParameter("word");
+                    wordsResult = ScholarQuerySystem.TopicSingleWord(wordSingle,pathSenOpt);
+                }
+                Writer out = response.getWriter();
+                out.write(JSON.toJSONString(wordsResult));
+                out.close();
+            }
 
 
-            Writer out = response.getWriter();
-            out.write(JSON.toJSONString(evlResult));
-            out.close();
+
+
         }
 
     }
