@@ -75,7 +75,7 @@ public class ScholarQuerySystem {
     }
 
     public static JSONObject TopicWords(String pathFre,String pathSen,JSONObject timeSpan,int tpcNum){
-        int cutEdge = 20;
+        int cutEdge = 50;
         JSONObject fileFre = ToolBag.ReadJsonObj(pathFre);
         JSONObject fileSen = ToolBag.ReadJsonObj(pathSen);
         JSONObject tpdWds = new JSONObject();
@@ -110,6 +110,33 @@ public class ScholarQuerySystem {
             }
             tpdWds.put("flag",true);
             tpdWds.put("msg",msgJson);
+        }catch (Exception e){
+            tpdWds.put("flag",false);
+        }
+        return tpdWds;
+    }
+
+    public static JSONObject TopicSingleWord(String word,String pathSen){
+        JSONObject fileSen = ToolBag.ReadJsonObj(pathSen);
+        JSONObject tpdWds = new JSONObject();
+        try{
+            tpdWds.put("flag",true);
+            List<String> sentenceSet = (List<String>) fileSen.get(word);
+            Random random = new Random();
+            int rIndex = random.nextInt(sentenceSet.size());
+            String sentenceResult = sentenceSet.get(rIndex);
+
+            List<String> wordOFSen = Arrays.asList(sentenceResult.split(" "));
+            int splitIndex = wordOFSen.indexOf(word);
+            if (splitIndex >0) {
+                JSONObject senObj = new JSONObject();
+                senObj.put("head", wordOFSen.subList(0, splitIndex).stream().collect(Collectors.joining(" ")));
+                senObj.put("body", word);
+                senObj.put("tail", wordOFSen.subList(splitIndex + 1, wordOFSen.size()).stream().collect(Collectors.joining(" ")));
+                tpdWds.put("sentence",senObj);
+            }else {
+                tpdWds.put("flag",false);
+            }
         }catch (Exception e){
             tpdWds.put("flag",false);
         }
