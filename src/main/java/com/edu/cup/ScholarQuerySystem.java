@@ -75,7 +75,7 @@ public class ScholarQuerySystem {
     }
 
     public static JSONObject TopicWords(String pathFre,String pathSen,JSONObject timeSpan,int tpcNum){
-        int cutEdge = 50;
+        int cutEdge = 7; //数目
         JSONObject fileFre = ToolBag.ReadJsonObj(pathFre);
         JSONObject fileSen = ToolBag.ReadJsonObj(pathSen);
         JSONObject tpdWds = new JSONObject();
@@ -92,7 +92,8 @@ public class ScholarQuerySystem {
                 List<String> wdSen = (List<String>) fileSen.get(wd);
                 Random random = new Random();
                 int rIndex = random.nextInt(wdSen.size() - cutEdge);
-                List<String> senCut = wdSen.subList(rIndex%wdSen.size(),(rIndex+cutEdge-1)% wdSen.size());
+                System.out.println(rIndex);
+                List<String> senCut = wdSen.subList(rIndex,rIndex+cutEdge);
 
                 for(String sen : senCut){
                     List<String> wordOFSen = Arrays.asList(sen.split(" "));

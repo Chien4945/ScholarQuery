@@ -52,8 +52,8 @@ public class TomcatService extends HttpServlet {
             out.write(JSON.toJSONString(qryResult));
             out.close();
         }else if (hint.equals("Topic")){
-            String pathFreOpt = "/Users/zhangjian/Desktop/TopicFrequence.json";
-            String pathSenOpt = "/Users/zhangjian/Desktop/TopicSen.json";
+            String pathFreOpt = "/home/cup1504/apache-tomcat-9.0.43/webapps/TopicInfo/TopicFrequence.json";
+            String pathSenOpt = "/home/cup1504/apache-tomcat-9.0.43/webapps/TopicInfo/TopicSen.json";
             JSONObject timeSpan = JSONObject.parseObject(request.getParameter("timespan"));
             int numTopic =Integer.parseInt(request.getParameter("numTopic").toString());
             String message = request.getParameter("message");

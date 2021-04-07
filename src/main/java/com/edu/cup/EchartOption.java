@@ -197,7 +197,7 @@ public class EchartOption {
         }
 
         int dateSpan = spanList.size();
-        int monthCut = dateSpan/20 + 1;
+        int monthCut = dateSpan/50 + 1;
 
         JSONObject riverOpt = new JSONObject(); //5 Parts: tooltip, legend, singleAxis, series, color
 
@@ -225,8 +225,7 @@ public class EchartOption {
                 "#00BFFF","#00CD00","#00FF7F","#FFFF00","#FF00FF",
                 "#F0FFF0","#FF7F24","#9370DB","#FF6A6A","#FFFFE0",
                 "#C1FFC1","#FAF0E6","#00F5FF","#EE2C2C","#D2691E",
-        "#A52A2A","#2E8B57","#1C1C1C"};
-
+                "#A52A2A","#2E8B57","#1C1C1C"};
 
         //legend
         JSONObject legend =new JSONObject(); //1 Part data
